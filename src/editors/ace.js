@@ -33,9 +33,9 @@ export class AceEditor extends StringEditor {
         selectionStyle: 'text',
         minLines: 30,
         maxLines: 30
-      }, this.defaults.options.ace || {}, this.options.ace || {}, {
+      }, this.defaults.options.ace, {
         mode: `ace/mode/${mode}`
-      }))
+      }, this.options.ace))
 
       this.ace_container = document.createElement('div')
       this.ace_container.style.width = '100%'
@@ -46,11 +46,14 @@ export class AceEditor extends StringEditor {
 
       this.ace_editor_instance = window.ace.edit(this.ace_container, options)
 
-      this.ace_editor_instance.setValue(this.getValue())
+      const val = this.getValue()
+      if (val != null) {
+        this.ace_editor_instance.setValue(val)
+      }
       this.ace_editor_instance.session.getSelection().clearSelection()
       this.ace_editor_instance.resize()
 
-      if (this.schema.readOnly || this.schema.readonly || this.schema.template) {
+      if (this.schema.readOnly || this.schema.readonly || this.schema.template || !this.active) {
         this.ace_editor_instance.setReadOnly(true)
       }
 

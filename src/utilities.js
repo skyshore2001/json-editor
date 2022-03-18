@@ -30,7 +30,7 @@ export function extend (destination, ...args) {
     if (source) {
       Object.keys(source).forEach(property => {
         if (source[property] && isPlainObject(source[property])) {
-          if (!hasOwnProperty(destination, property)) destination[property] = {}
+          if (!hasOwnProperty(destination, property) || !isPlainObject(destination[property])) destination[property] = {}
           extend(destination[property], source[property])
         } else if (Array.isArray(source[property])) {
           destination[property] = deepCopy(source[property])
