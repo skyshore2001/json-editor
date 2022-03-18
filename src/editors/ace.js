@@ -19,7 +19,15 @@ export class AceEditor extends StringEditor {
     this.input.setAttribute('data-schemaformat', this.input_type)
   }
 
-  afterInputReady () {
+  async afterInputReady () {
+    if (!window.ace) {
+      const ev = { libname: 'ace', dfd: null }
+      this.jsoneditor.trigger('loadlib', ev)
+      if (ev.dfd && ev.dfd.then) {
+        await ev.dfd
+      }
+    }
+
     let options
 
     if (window.ace) {
