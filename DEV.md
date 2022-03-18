@@ -67,3 +67,26 @@
 				},
 			},
 
+### 按需加载ace库
+
+如果window.ace变量为空，则发出loadlib事件，用于加载ace库，示例：
+
+	// async load ace lib, use ev.dfd (means Deferred/Promise)
+	jsonEditor.on("loadlib", function (ev) {
+		if (ev.libname == "ace") {
+			ev.dfd = loadAceLib();
+		}
+	});
+
+	var m_dfdAceLib;
+	function loadAceLib()
+	{
+		if (m_dfdAceLib == null) {
+			m_dfdAceLib = $.when(WUI.loadScript("lib/ace/ace.js"), WUI.loadScript("lib/ace/ext-language_tools.js"));
+			m_dfdAceLib.then(function () {
+				ace.require("ace/ext/language_tools");
+			});
+		}
+		return m_dfdAceLib;
+	}
+
