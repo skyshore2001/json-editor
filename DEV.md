@@ -83,10 +83,22 @@
 	{
 		if (m_dfdAceLib == null) {
 			m_dfdAceLib = $.when(WUI.loadScript("lib/ace/ace.js"), WUI.loadScript("lib/ace/ext-language_tools.js"));
-			m_dfdAceLib.then(function () {
-				ace.require("ace/ext/language_tools");
-			});
 		}
 		return m_dfdAceLib;
 	}
+
+默认配置示例：ace选项中设置自动提示
+
+	$.extend(JSONEditor.defaults.options, {
+		theme: "bootstrap4",
+		iconlib: "fontawesome4", 
+		remove_empty_properties: true,
+		use_default_values: false,
+		show_opt_in: true,
+		ace: {
+			enableBasicAutocompletion: true,
+			enableSnippets: true,
+			enableLiveAutocompletion: true
+		}
+	});
 
