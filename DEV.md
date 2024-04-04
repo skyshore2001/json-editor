@@ -102,3 +102,18 @@
 		}
 	});
 
+### 数组项支持拖拽调方式整顺序
+
+Drag and drop for array item is supported. 
+For array editor with format=`tabs` or `tabs-top`, dragging the tab header is enabled by default.
+But for the default editor or format=`table`, dragging is enabled once by double click on the array item panel. This design avoid side-effect of draggable panel.
+
+拖拽的实现使用了draggable属性及相关事件(dragstart/dragover/drop等)。
+对于format=tabs或tabs-top的情况，可以拖拽tab头到所需位置即可；
+但对于format=table或默认情况，需要通过双击操作来激活，或是选中一些文本拖拽到其它位置也可以。
+
+因为面板中包含有大量其它组件，如果直接设置draggable属性，将导致其内部所有的文本无法通过鼠标拖拉来选择（因为与拖拽操作冲突），
+对于文本框内无法拖拉问题，还可以在dragstart事件中判断鼠标当前所在的DOM组件并调用ev.preventDefault()来实现。但其它处文本则没有办法来实现拖拉选择。
+为了不影响这些操作，默认不开放拖拽操作，直到双击面板区域则才激活(draggable=true)，待完成或取消拖拽动作后再次禁用(draggable=false)。
+
+TODO：可增加右键菜单，支持激活拖拽、复制粘贴json等操作。可支持多个数组项一起拖拽调整位置。
