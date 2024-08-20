@@ -684,7 +684,7 @@ export class ArrayEditor extends AbstractEditor {
       this.onChange(true)
 
       this.jsoneditor.trigger('moveRow', this.rows[j])
-    }, { useTrigger: useTrigger })
+    }, { useTrigger })
   }
 
   addControls () {
