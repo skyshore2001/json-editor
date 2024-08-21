@@ -1137,9 +1137,9 @@ editor.on('deleteAllRows', deletedValues => {
 });
 ```
 
-Drag and drop for array item is supported. 
-For array editor with format=`tabs` or `tabs-top`, dragging the tab header is enabled by default.
-But for the default editor or format=`table`, dragging is enabled once by double click on the array item panel. This design avoid side-effect of draggable panel.
+Drag and drop for array item is supported to perform a quick item moving.
+For array editor with format=`tabs` or `tabs-top`, you can drag the tab header directly.
+For the default array editor (or format=`table`), you have to drag the array item panel with Ctrl key pressed (to avoid side-effect of draggable panel), or drag any text in the input box to another item panel.
 
 #### Schema loader events
 

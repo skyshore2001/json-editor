@@ -868,15 +868,19 @@ ArrayEditor.rules = rules
 // useTrigger=true: double click to enable drag
 export function supportDragDrop (tab, handler, opt = {}) {
   if (opt.useTrigger) {
-    tab.addEventListener('dblclick', e => {
-      if (e.target.tagName === 'INPUT') {
-        return
+    tab.addEventListener('mousedown', e => {
+      if (e.ctrlKey) {
+        // window.console.log('enable drag')
+        tab.draggable = true
+        const fn = e => {
+          tab.draggable = false
+          // window.console.log('disable drag')
+          document.removeEventListener('dragend', fn)
+          document.removeEventListener('mouseup', fn)
+        }
+        document.addEventListener('dragend', fn)
+        document.addEventListener('mouseup', fn)
       }
-      window.console.log('enable drag')
-      tab.draggable = true
-    })
-    tab.addEventListener('dragend', e => {
-      tab.draggable = false
     })
   } else {
     tab.draggable = true
