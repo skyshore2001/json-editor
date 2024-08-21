@@ -93,7 +93,7 @@
 		theme: "bootstrap4",
 		iconlib: "fontawesome4", 
 		remove_empty_properties: true,
-		use_default_values: false,
+		// use_default_values: false, // 这个不建议用了，有些bug，且意义似乎不大
 		show_opt_in: true,
 		ace: {
 			enableBasicAutocompletion: true,
@@ -101,4 +101,18 @@
 			enableLiveAutocompletion: true
 		}
 	});
+
+### 数组项支持拖拽调方式整顺序
+
+Drag and drop for array item is supported to perform a quick item moving.
+For array editor with format=`tabs` or `tabs-top`, you can drag the tab header directly.
+For the default array editor (or format=`table`), you have to drag the array item panel with Ctrl key pressed (to avoid side-effect of draggable panel), or drag any text in the input box to another item panel.
+
+拖拽的实现使用了draggable属性及相关事件(dragstart/dragover/drop等)。
+对于format=tabs或tabs-top的情况，可以拖拽tab头到所需位置即可；
+但对于format=table或默认情况，需要按住Ctrl来拖动，或是选中一些文本拖拽到其它位置也可以。
+
+因为面板中包含有大量其它组件，如果直接设置draggable属性，将导致其内部所有的文本无法通过鼠标拖拉来选择（因为与拖拽操作冲突），
+对于文本框内无法拖拉问题，还可以在dragstart事件中判断鼠标当前所在的DOM组件并调用ev.preventDefault()来实现。但其它处文本则没有办法来实现拖拉选择。
+为了不影响这些操作，默认不开放拖拽操作，直到双击面板区域则才激活(draggable=true)，待完成或取消拖拽动作后再次禁用(draggable=false)。
 
