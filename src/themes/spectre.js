@@ -127,7 +127,7 @@ export class spectreTheme extends AbstractTheme {
   }
 
   getHeader (text, pathDepth) {
-    const el = document.createElement('span')
+    const el = document.createElement('h4')
     if (typeof text === 'string') {
       el.textContent = text
     } else {
@@ -263,7 +263,7 @@ export class spectreTheme extends AbstractTheme {
     if (description) group.appendChild(description)
 
     if (input.tagName.toLowerCase() !== 'div' && input && label && formName) {
-      label.setAttribute('for', formName)
+      // label.setAttribute('for', formName)
       input.setAttribute('id', formName)
     }
 
