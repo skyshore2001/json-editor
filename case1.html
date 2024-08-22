@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Basic JSON Editor Example</title>
+    <!--script src="jsoneditor.min.js"></script-->
+    <script src="dist/jsoneditor.js"></script>
+  </head>
+  <body>
+    <h1>Basic JSON Editor Example</h1>
+
+    <div id='editor_holder'></div>
+    <button id='submit'>Submit (console.log)</button>
+
+    <script>
+			var startval = {
+				a: true,
+				b: 99,
+				type: "ZUSB",
+				ranges: [0,1,2],
+			};
+
+      // Initialize the editor with a JSON schema
+      var editor = new JSONEditor(document.getElementById('editor_holder'),{
+        schema: {
+          type: "object",
+          title: "root",
+          properties: {
+						a: {
+							type:"boolean",
+						},
+						c: {
+							type:"boolean",
+							required: true
+						},
+						type: {
+							type:"string",
+							enum: ["USB","ZUSB","NET"],
+							default: "ZUSB"
+						},
+            ranges: {
+              type: "array",
+              format: "table",
+              items: {
+                type: "integer"
+              }
+            }
+          }
+        },
+        startval: startval,
+        remove_empty_properties: true,
+        //use_default_values: false,
+				show_opt_in: true
+      });
+
+			//editor.getEditor("root").setValue(startval, true);
+//			editor.getEditor("root").setValue(startval);
+
+      // Hook up the submit button to log to the console
+      document.getElementById('submit').addEventListener('click',function() {
+        // Get the value from the editor
+        console.log(editor.getValue());
+      });
+    </script>
+  </body>
+</html>
