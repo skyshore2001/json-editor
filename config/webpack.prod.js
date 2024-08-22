@@ -10,7 +10,7 @@ module.exports = () => {
     output: {
       path: helpers.root('dist'),
       publicPath: '/dist/',
-      filename: '[name].js',
+      filename: '[name].min.js',
       libraryTarget: 'umd'
     },
     optimization: {
