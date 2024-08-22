@@ -1316,6 +1316,7 @@ export class ObjectEditor extends AbstractEditor {
         /* Otherwise, remove value unless this is the initial set or it's required */
       } else if (!initial && !this.isRequiredObject(editor) && !this.options.table_row) {
         if (this.jsoneditor.options.show_opt_in || this.options.show_opt_in) {
+          editor.setValue(editor.getDefault(), initial)
           editor.deactivate()
         } else {
           this.removeObjectProperty(i)
