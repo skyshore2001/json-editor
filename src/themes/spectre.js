@@ -160,11 +160,7 @@ export class spectreTheme extends AbstractTheme {
   }
 
   getCheckboxLabel (text, req) {
-    const el = super.getCheckboxLabel(text, req); const icon = document.createElement('i')
-    icon.classList.add('form-icon')
-    el.classList.add('form-checkbox', 'pr-0')
-    el.insertBefore(icon, el.firstChild)
-    return el
+    return this.getFormInputLabel(text, req)
   }
 
   getFormCheckboxControl (label, input, compact) {
@@ -247,6 +243,7 @@ export class spectreTheme extends AbstractTheme {
       if (infoText) label.appendChild(infoText)
       label.insertBefore(input, label.firstChild)
       group.appendChild(label)
+      input.style.marginRight = '10px'
     } else {
       if (label) {
         label.classList.add('form-label')
