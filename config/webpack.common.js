@@ -2,19 +2,18 @@ const webpack = require('webpack')
 const helpers = require('./helpers')
 const CssToJSON = require('../build/CssToJson')
 const ESLintPlugin = require('eslint-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
-const bannerText = `/**
-* @name JSON Editor
-* @description JSON Schema Based Editor
-* This library is the continuation of jdorn's great work (see also https://github.com/jdorn/json-editor/issues/800)
-* @version {{ VERSION }}-lj
-* @author Jeremy Dorn
-* @see https://github.com/jdorn/json-editor/
-* @see https://github.com/json-editor/json-editor
-* @see https://github.com/skyshore2001/json-editor
-* @license MIT
-* @example see README.md and docs/ for requirements, examples and usage info
-*/`
+const bannerText = `@name JSON Editor
+@description JSON Schema Based Editor
+This library is the continuation of jdorn's great work (see also https://github.com/jdorn/json-editor/issues/800)
+@version {{ VERSION }}-lj
+@author Jeremy Dorn
+@see https://github.com/jdorn/json-editor/
+@see https://github.com/json-editor/json-editor
+@see https://github.com/skyshore2001/json-editor
+@license MIT
+@example see README.md and docs/ for requirements, examples and usage info`
 module.exports = {
   entry: {
     jsoneditor: './src/core.js'
@@ -68,5 +67,10 @@ module.exports = {
     static: helpers.root('.'),
     historyApiFallback: true,
     port: 8080
-  }
+  },
+  optimization: {
+    minimizer: [new TerserPlugin({
+      extractComments: false,
+    })],
+  },
 }
