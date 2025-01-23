@@ -33,16 +33,6 @@ export class CheckboxEditor extends AbstractEditor {
     return Math.min(12, Math.max(this.getTitle().length / 7, 2))
   }
 
-  setOptInCheckbox () {
-    super.setOptInCheckbox()
-
-    if (this.optInAppended) {
-      this.container.insertBefore(this.optInContainer, this.container.firstChild)
-      this.optInContainer.style.verticalAlign = 'top'
-      this.control.style.marginTop = '0'
-    }
-  }
-
   build () {
     if (!this.parent.options.table_row) {
       this.label = this.header = this.theme.getCheckboxLabel(this.getTitle(), this.isRequired())
@@ -57,6 +47,12 @@ export class CheckboxEditor extends AbstractEditor {
     this.input.id = this.formname
     this.control = this.theme.getFormControl(this.label, this.input, this.description, this.infoButton)
     this.control.style.display = 'inline-block'
+
+    this.bindOptIn = !this.isRequired() && this.jsoneditor.options.show_opt_in
+    if (this.bindOptIn) {
+      this.input.style.display = 'none'
+      this.label.htmlFor += '-opt-in'
+    }
 
     if (this.schema.readOnly || this.schema.readonly) {
       this.disable(true)
@@ -77,6 +73,9 @@ export class CheckboxEditor extends AbstractEditor {
   enable () {
     if (!this.always_disabled) {
       this.input.disabled = false
+      if (this.bindOptIn) {
+        this.setValue(this.isActive())
+      }
       super.enable()
     }
   }
@@ -84,6 +83,9 @@ export class CheckboxEditor extends AbstractEditor {
   disable (alwaysDisabled) {
     if (alwaysDisabled) this.always_disabled = true
     this.input.disabled = true
+    if (this.bindOptIn) {
+      this.setValue(this.isActive())
+    }
     super.disable()
   }
 
