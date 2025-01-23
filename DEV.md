@@ -40,6 +40,17 @@
 
 ## 修改记录
 
+### 2025/1 checkbox调整
+
+当show_opt_in=true时，format=checkbox原先会显示两个checkbox，一个是opt_in一个是自身，现在合并为一个（只用opt_in），要么勾上为true值，要么不勾没有值。
+
+	prop1: {
+		type:"boolean",
+		format: "checkbox"
+	},
+
+调整spectre对checkbox的改造，它原先用了form-icon来替代显示checkbox，会导致风格不一致。
+
 ### ace代码编辑器集成优化
 
 2022/03/18 
