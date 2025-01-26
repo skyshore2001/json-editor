@@ -73,6 +73,8 @@ export class TableEditor extends ArrayEditor {
       this.error_holder = document.createElement('div')
       this.panel.appendChild(this.error_holder)
     } else {
+      this.title = document.createElement('div')
+      this.container.appendChild(this.title)
       this.panel = document.createElement('div')
       this.container.appendChild(this.panel)
     }
