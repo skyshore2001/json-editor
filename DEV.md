@@ -40,6 +40,10 @@
 
 ## 修改记录
 
+### 2025/1 bugfix: array_controls_top=true时array format=table出错
+
+当array_controls_top=true且compact=true时（或array format=table中再嵌套一个array format=table，此时内层array自动为compact=true），报错失败。
+
 ### 2025/1 checkbox调整
 
 当show_opt_in=true时，format=checkbox原先会显示两个checkbox，一个是opt_in一个是自身，现在合并为一个（只用opt_in），要么勾上为true值，要么不勾没有值。
