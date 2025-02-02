@@ -416,6 +416,9 @@ export class JSONEditor {
     const errors = this.validate()
 
     Object.values(this.editors).forEach(editor => {
+      if (editor == null) {
+        return
+      }
       editor.is_dirty = true
       editor.showValidationErrors(errors)
     })
