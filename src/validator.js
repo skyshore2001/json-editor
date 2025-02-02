@@ -700,7 +700,7 @@ export class Validator {
     path = path || this.jsoneditor.root.formname
 
     const ed = this.jsoneditor.getEditor(path)
-    if (!ed.isEnabled() || !ed.isActive()) {
+    if (ed == null || !ed.isEnabled() || !ed.isActive()) {
       return errors
     }
 
