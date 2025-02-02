@@ -699,6 +699,11 @@ export class Validator {
     const errors = []
     path = path || this.jsoneditor.root.formname
 
+    const ed = this.jsoneditor.getEditor(path)
+    if (!ed.isEnabled() || !ed.isActive()) {
+      return errors
+    }
+
     /* Work on a copy of the schema */
     schema = extend({}, this.jsoneditor.expandRefs(schema))
 
@@ -706,8 +711,11 @@ export class Validator {
      * Type Agnostic Validation
      */
     /* Version 3 `required` and `required_by_default` */
-    if (typeof value === 'undefined') {
-      return this._validateV3Required(schema, value, path)
+    if (value == null || value === '') {
+      const rv = this._validateV3Required(schema, value, path)
+      if (rv.length > 0) {
+        return rv
+      }
     }
 
     Object.keys(schema).forEach(key => {

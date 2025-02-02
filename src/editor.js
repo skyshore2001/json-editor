@@ -154,6 +154,8 @@ export class AbstractEditor {
     })
 
     if (this.dependenciesFulfilled !== previousStatus) {
+      // validation and the final result will ignore this field
+      this.active = this.dependenciesFulfilled
       this.notify()
     }
 
