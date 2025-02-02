@@ -9,60 +9,66 @@
   <body>
     <h1>Basic JSON Editor Example</h1>
 
-    <div id='editor_holder'></div>
+    <div id='editor_holder' class='spectre'></div>
     <button id='submit'>Submit (console.log)</button>
-
-    <script>
-      var startval = {
-        a: true,
-        b: 99,
-        type: "ZUSB",
-        ranges: [0,1,2],
-      };
-
-      // Initialize the editor with a JSON schema
-      var editor = new JSONEditor(document.getElementById('editor_holder'),{
-        schema: {
-          type: "object",
-          title: "root",
-          properties: {
-            a: {
-              type:"boolean",
-              format: "checkbox"
-            },
-            c: {
-              type:"boolean",
-              required: true
-            },
-            type: {
-              type:"string",
-              enum: ["USB","ZUSB","NET"],
-              default: "ZUSB"
-            },
-            ranges: {
-              type: "array",
-              format: "table",
-              items: {
-                type: "integer"
-              }
-            }
-          }
-        },
-        startval: startval,
-        //remove_empty_properties: true,
-        //use_default_values: false,
-        array_controls_top: true,
-        show_opt_in: true
-      });
-
-      //editor.getEditor("root").setValue(startval, true);
-//      editor.getEditor("root").setValue(startval);
-
-      // Hook up the submit button to log to the console
-      document.getElementById('submit').addEventListener('click',function() {
-        // Get the value from the editor
-        console.log(editor.getValue());
-      });
-    </script>
   </body>
+
+<!--link rel="stylesheet" type="text/css" href="css/spectre-scoped.min.css"-->
+<script>
+var startval = {
+  a: true,
+  b: 99,
+  type: "ZUSB",
+  ranges: [0,1,2],
+};
+
+var editor = new JSONEditor(document.getElementById('editor_holder'),{
+  schema: {
+    type: "object",
+    title: "root",
+    properties: {
+      a: {
+        type:"boolean",
+        format: "checkbox"
+      },
+      c: {
+        type:"boolean",
+        required: true
+      },
+      type: {
+        type:"string",
+        enum: ["USB","ZUSB","NET"],
+        default: "ZUSB"
+      },
+      ranges: {
+        type: "array",
+        format: "table",
+        items: {
+          type: "integer",
+          minimum: 1
+        }
+      }
+    }
+  },
+  startval: startval,
+  //theme: "spectre",
+  //iconlib: "spectre",
+  //remove_empty_properties: true,
+  //use_default_values: false,
+  //no_additional_properties: true,
+  array_controls_top: true,
+  show_opt_in: true
+});
+
+//editor.getEditor("root").setValue(startval, true);
+
+document.getElementById('submit').addEventListener('click',function() {
+  console.log(editor.getValue())
+  var errors = editor.validate()
+  if (errors.length > 0) {
+    editor.showValidationErrors();
+    console.log('errors', errors)
+  }
+});
+</script>
 </html>

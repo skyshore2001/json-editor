@@ -5,63 +5,65 @@
     <title>Basic JSON Editor Example</title>
     <script src="dist/jsoneditor.js"></script>
 <link rel="stylesheet" type="text/css" href="css/spectre-scoped.min.css">
-		
+    
   </head>
   <body>
     <h1>Drag and drop for array items</h1>
 
     <div id='editor_holder' class='spectre'></div>
     <button id='submit'>Submit (console.log)</button>
-
-    <script>
-	window.DOMPurify = {
-		sanitize: function (e) { return e }
-	};
-			var startval = [
-        {title: "A"},
-        {title: "B", dscr: 'bbb'},
-        {title: "C"},
-        {title: "D", dscr: 'ddd'},
-      ];
-
-      // Initialize the editor with a JSON schema
-      var editor = new JSONEditor(document.getElementById('editor_holder'),{
-        schema: {
-          type: "array",
-					//format: "table",
-					//format: "tabs-top",
-					format: "tabs",
-					items: {
-            type: "object",
-            headerTemplate: "{{self.title}}",
-            properties: {
-              title: {
-                type: "string",
-                description: 'this is <a href="http://yibo.ltd" target=_blank><b>title2</b></a> desc'
-              },
-              dscr: {
-                type: "string",
-              }
-            }
-					}
-        },
-        startval: startval,
-
-				theme: "spectre",
-				iconlib: "spectre",
-				remove_empty_properties: true,
-				//use_default_values: false,
-				show_opt_in: true,
-      });
-
-			//editor.getEditor("root").setValue(startval, true);
-//			editor.getEditor("root").setValue(startval);
-
-      // Hook up the submit button to log to the console
-      document.getElementById('submit').addEventListener('click',function() {
-        // Get the value from the editor
-        console.log(editor.getValue());
-      });
-    </script>
   </body>
+
+<script>
+window.DOMPurify = {
+	sanitize: function (e) { return e }
+};
+var startval = [
+	{title: "A"},
+	{title: "B", dscr: 'bbb'},
+	{title: "C"},
+	{title: "D", dscr: 'ddd'},
+];
+
+// Initialize the editor with a JSON schema
+var editor = new JSONEditor(document.getElementById('editor_holder'),{
+	schema: {
+		type: "array",
+		//format: "table",
+		//format: "tabs-top",
+		format: "tabs",
+		items: {
+			type: "object",
+			headerTemplate: "{{self.title}}",
+			properties: {
+				title: {
+					type: "string",
+					description: 'this is <a href="http://yibo.ltd" target=_blank><b>title2</b></a> desc',
+					required: true,
+				},
+				dscr: {
+					type: "string",
+					minLength: 4
+				}
+			}
+		}
+	},
+	startval: startval,
+
+	theme: "spectre",
+	iconlib: "spectre",
+	show_opt_in: true,
+//remove_empty_properties: true,
+//use_default_values: false,
+});
+
+document.getElementById('submit').addEventListener('click',function() {
+  console.log(editor.getValue())
+  var errors = editor.validate()
+  if (errors.length > 0) {
+    editor.showValidationErrors();
+    console.log('errors', errors)
+  }
+});
+</script>
 </html>
