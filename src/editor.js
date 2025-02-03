@@ -80,20 +80,35 @@ export class AbstractEditor {
     return this.active
   }
 
-  activate () {
-    this.active = true
-    this.optInCheckbox.checked = true
-    this.enable()
+  isFinalActive () {
+    if (!this.active) {
+      return false
+    }
+    if (!this.parent) {
+      return this.active
+    }
+    return this.parent.isFinalActive()
+  }
+
+  setActive (v) {
+    this.active = v
+    this.optInCheckbox.checked = v
+    if (v) {
+      this.enable()
+    } else {
+      this.disable()
+    }
     this.change()
+  }
+
+  activate () {
+    this.setActive(true)
   }
 
   deactivate () {
     /* only non required properties can be deactivated. */
     if (!this.isRequired()) {
-      this.active = false
-      this.optInCheckbox.checked = false
-      this.disable()
-      this.change()
+      this.setActive(false)
     }
   }
 
@@ -155,7 +170,13 @@ export class AbstractEditor {
 
     if (this.dependenciesFulfilled !== previousStatus) {
       // validation and the final result will ignore this field
-      this.active = this.dependenciesFulfilled
+      if (this.optInAppended && !this.optInCheckbox.checked) {
+        // noop
+      } else if (this.parent && !this.parent.isFinalActive()) {
+        // noop
+      } else {
+        this.setActive(this.dependenciesFulfilled)
+      }
       this.notify()
     }
 
