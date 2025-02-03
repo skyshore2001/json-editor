@@ -120,21 +120,33 @@ export class AbstractEditor {
     }
 
     Object.keys(deps).forEach(dependency => {
-      let path
-      const isFullPath = dependency.startsWith(this.jsoneditor.root.path)
-
-      if (isFullPath) {
-        path = dependency
-      } else {
-        path = this.path.split('.')
-        path[path.length - 1] = dependency
-        path = path.join('.')
-      }
-
+      const path = this.getPath(dependency)
       this.jsoneditor.watch(path, () => {
         this.evaluateDependencies()
       })
     })
+  }
+
+  getPath (dependency) {
+    const parts = dependency.split('.')
+    let path
+    // isFullPath
+    if (parts[0] === this.jsoneditor.root.path) {
+      path = dependency
+    } else {
+      path = this.path.split('.')
+      const n = parseInt(parts[0])
+      // e.g. "-2.title" => $parent.$parent.title
+      if (n < 0) {
+        path.splice(n)
+        parts.shift()
+        path.push(...parts)
+      } else {
+        path[path.length - 1] = dependency
+      }
+      path = path.join('.')
+    }
+    return path
   }
 
   evaluateDependencies () {
@@ -153,17 +165,7 @@ export class AbstractEditor {
     this.dependenciesFulfilled = true
 
     Object.keys(deps).forEach(dependency => {
-      let path
-      const isFullPath = dependency.startsWith(this.jsoneditor.root.path)
-
-      if (isFullPath) {
-        path = dependency
-      } else {
-        path = this.path.split('.')
-        path[path.length - 1] = dependency
-        path = path.join('.')
-      }
-
+      const path = this.getPath(dependency)
       const choices = deps[dependency]
       this.checkDependency(path, choices)
     })
@@ -207,6 +209,8 @@ export class AbstractEditor {
           return true
         }
       })
+    } else if (typeof choices === 'function') {
+      this.dependenciesFulfilled = choices(value, this)
     } else if (typeof choices === 'object') {
       if (typeof value !== 'object') {
         this.dependenciesFulfilled = choices === value

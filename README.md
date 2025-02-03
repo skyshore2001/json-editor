@@ -1422,6 +1422,40 @@ Keys can also be an absolute path like `root.property.nested_property`
   }
 ```
 
+Keys can also be an relative path like `-2.gender`, `-1.maleSpecificAge`. `-1` means parent, `-2` means parent's parent.
+
+```javascript
+  "dependencies": {
+    "-2.gender": "male"
+  }
+```
+
+The `dependencies` value can be function or lambda. The function prototype is `(value, editor) => boolean`.
+
+```javascript
+  "dependencies": {
+    "-2.gender": v => v == "male"
+  }
+
+// OR direct listen to `-2`
+  "dependencies": {
+    "-2": v => v.gender == "male"
+  }
+
+// OR just use this feature for some update:
+  "dependencies": {
+    "-2.gender": (v, ed) => {
+      if (v == "male") {
+        ed.enable();
+      }
+      else {
+        ed.disable();
+      }
+      return true
+    }
+  }
+```
+
 The `dependencies` keyword from the JSON Schema specification is not nearly flexible enough to handle most use cases,
 so JSON Editor introduces a couple custom keywords that help in this regard.
 
