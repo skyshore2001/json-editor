@@ -716,6 +716,9 @@ export class Validator {
       if (rv.length > 0) {
         return rv
       }
+      if (value === undefined) {
+        return []
+      }
     }
 
     Object.keys(schema).forEach(key => {

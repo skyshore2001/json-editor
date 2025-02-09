@@ -1034,13 +1034,8 @@ export class ObjectEditor extends AbstractEditor {
       return undefined
     }
     const result = super.getValue()
-    const isEmpty = obj => typeof obj === 'undefined' || obj === '' ||
-    (
-      obj === Object(obj) &&
-      Object.keys(obj).length === 0 &&
-      obj.constructor === Object
-    )
     if (result && (this.jsoneditor.options.remove_empty_properties || this.options.remove_empty_properties)) {
+      const isEmpty = obj => obj == null || obj === ''
       Object.keys(result).forEach(key => {
         if (isEmpty(result[key])) {
           delete result[key]
