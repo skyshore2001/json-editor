@@ -2,6 +2,11 @@ import { AbstractEditor } from '../editor.js'
 
 export class CheckboxEditor extends AbstractEditor {
   setValue (value, initial) {
+    if (this.bindOptIn && this.optInCheckbox) {
+      this.active = value
+      this.optInCheckbox.checked = value
+    }
+
     value = this.applyConstFilter(value)
     value = !!value
     const changed = this.getValue() !== value
@@ -70,12 +75,29 @@ export class CheckboxEditor extends AbstractEditor {
     this.container.appendChild(this.control)
   }
 
+  activate () {
+    if (!this.bindOptIn) {
+      super.activate()
+      return
+    }
+    if (window.event?.target === this.optInCheckbox) {
+      this.setValue(true)
+    }
+  }
+
+  deactivate () {
+    if (!this.bindOptIn) {
+      super.deactivate()
+      return
+    }
+    if (window.event?.target === this.optInCheckbox) {
+      this.setValue(false)
+    }
+  }
+
   enable () {
     if (!this.always_disabled) {
       this.input.disabled = false
-      if (this.bindOptIn) {
-        this.setValue(this.isActive())
-      }
       super.enable()
     }
   }
@@ -83,9 +105,6 @@ export class CheckboxEditor extends AbstractEditor {
   disable (alwaysDisabled) {
     if (alwaysDisabled) this.always_disabled = true
     this.input.disabled = true
-    if (this.bindOptIn) {
-      this.setValue(this.isActive())
-    }
     super.disable()
   }
 
