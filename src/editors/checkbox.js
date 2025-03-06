@@ -56,7 +56,9 @@ export class CheckboxEditor extends AbstractEditor {
     this.bindOptIn = !this.isRequired() && this.jsoneditor.options.show_opt_in
     if (this.bindOptIn) {
       this.input.style.display = 'none'
-      this.label.htmlFor += '-opt-in'
+      if (this.label) {
+        this.label.htmlFor += '-opt-in'
+      }
     }
 
     if (this.schema.readOnly || this.schema.readonly) {
