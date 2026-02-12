@@ -700,7 +700,9 @@ export class AbstractEditor {
   }
 
   enable () {
-    this.disabled = false
+    if (this.dependenciesFulfilled) {
+      this.disabled = false
+    }
   }
 
   disable () {
